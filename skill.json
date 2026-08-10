@@ -1,0 +1,160 @@
+{
+    "manifest": {
+        "publishingInformation": {
+            "locales": {
+                "en-US": {
+                    "name": "chat",
+                    "summary": "Gemini in Alexa",
+                    "description": "Alexa skill that uses the Google AI Studio API to generate responses from the Gemini model",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "en-GB": {
+                    "name": "chat",
+                    "summary": "Gemini in Alexa",
+                    "description": "Alexa skill that uses the Google AI Studio API to generate responses from the Gemini model",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "en-CA": {
+                    "name": "chat",
+                    "summary": "Gemini in Alexa",
+                    "description": "Alexa skill that uses the Google AI Studio API to generate responses from the Gemini model",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "en-IN": {
+                    "name": "chat",
+                    "summary": "Gemini in Alexa",
+                    "description": "Alexa skill that uses the Google AI Studio API to generate responses from the Gemini model",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "en-AU": {
+                    "name": "chat",
+                    "summary": "Gemini in Alexa",
+                    "description": "Alexa skill that uses the Google AI Studio API to generate responses from the Gemini model",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "es-ES": {
+                    "name": "chat",
+                    "summary": "Gemini en Alexa",
+                    "description": "Skill de Alexa que utiliza la API de Google AI Studio para generar respuestas desde el modelo Gemini",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "es-MX": {
+                    "name": "chat",
+                    "summary": "Gemini en Alexa",
+                    "description": "Skill de Alexa que utiliza la API de Google AI Studio para generar respuestas desde el modelo Gemini",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "es-US": {
+                    "name": "chat",
+                    "summary": "Gemini en Alexa",
+                    "description": "Skill de Alexa que utiliza la API de Google AI Studio para generar respuestas desde el modelo Gemini",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "fr-FR": {
+                    "name": "chat",
+                    "summary": "Gemini dans Alexa",
+                    "description": "Skill Alexa qui utilise l'API Google AI Studio pour générer des réponses à partir du modèle Gemini",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "fr-CA": {
+                    "name": "chat",
+                    "summary": "Gemini dans Alexa",
+                    "description": "Skill Alexa qui utilise l'API Google AI Studio pour générer des réponses à partir du modèle Gemini",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "ja-JP": {
+                    "name": "chat",
+                    "summary": "Alexaの中のGemini",
+                    "description": "Google AI Studio APIを使用してGeminiモデルからの応答を生成するAlexaスキル",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "de-DE": {
+                    "name": "chat",
+                    "summary": "Gemini in Alexa",
+                    "description": "Alexa-Skill, der die Google AI Studio-API verwendet, um Antworten vom Gemini-Modell zu generieren",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "it-IT": {
+                    "name": "chat",
+                    "summary": "Gemini in Alexa",
+                    "description": "Skill di Alexa che utilizza l'API di Google AI Studio per generare risposte dal modello Gemini",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "hi-IN": {
+                    "name": "chat",
+                    "summary": "Alexa में Gemini",
+                    "description": "Alexa कौशल जो Google AI Studio API का उपयोग करके Gemini मॉडल से प्रतिक्रियाएं उत्पन्न करता है",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                },
+                "pt-BR": {
+                    "name": "chat",
+                    "summary": "Gemini na Alexa",
+                    "description": "Skill Alexa que usa a API do Google AI Studio para gerar respostas a partir do modelo Gemini",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                }PT",
+                    "examplePhrases": [
+                        "Alexa chat"
+                    ],
+                    "keywords": []
+                }
+            },
+            "isAvailableWorldwide": true,
+            "testingInstructions": "Sample Testing Instructions",
+            "distributionCountries": []
+        },
+        "apis": {
+            "custom": {
+				"endpoint": {
+					"sourceDir": "lambda",
+					"uri": "ask-custom-helloworld-classes-default"
+				}
+			}
+        },
+        "manifestVersion": "1.0"
+    }
+}
