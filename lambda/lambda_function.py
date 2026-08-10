@@ -13,7 +13,7 @@ import re
 # Set your Google AI Studio API key
 api_key = os.environ.get("GEMINI_API_KEY", os.environ.get("GOOGLE_API_KEY", "YOUR_API_KEY"))
 
-model = "gemini-2.5-flash"
+model = "gemini-3.5-flash"
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
