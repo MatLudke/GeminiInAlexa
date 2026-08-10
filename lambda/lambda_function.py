@@ -168,63 +168,8 @@ def extract_context(question, response):
     return {"question": question, "response": response}
 
 def generate_followup_questions(conversation_context, query, response_text, count=2):
-    """Generates concise follow-up questions based on the conversation context using Google AI Studio API"""
-    try:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
-        headers = {"Content-Type": "application/json"}
-        
-        system_instruction = "You are a helpful assistant that suggests short follow-up questions."
-        
-        prompt_parts = []
-        prompt_parts.append("Based on the conversation, suggest 2 very short follow-up questions (max 4 words each). Make them direct and simple. Return ONLY the questions separated by '|'. Example: What's the capital?|How big is it?")
-        
-        if conversation_context:
-            last_q, last_a = conversation_context[-1]
-            prompt_parts.append(f"Previous Q: {last_q}\nPrevious A: {last_a}")
-            
-        prompt_parts.append(f"Current Q: {query}\nCurrent A: {response_text}\nFollow-up questions (separated by |):")
-        
-        full_prompt = "\n\n".join(prompt_parts)
-        
-        data = {
-            "systemInstruction": {
-                "parts": [{"text": system_instruction}]
-            },
-            "contents": [
-                {
-                    "role": "user",
-                    "parts": [{"text": full_prompt}]
-                }
-            ],
-            "generationConfig": {
-                "maxOutputTokens": 50,
-                "temperature": 0.7
-            }
-        }
-        
-        res = requests.post(url, headers=headers, data=json.dumps(data), timeout=3)
-        if res.ok:
-            res_data = res.json()
-            candidates = res_data.get('candidates', [])
-            if candidates:
-                parts = candidates[0].get('content', {}).get('parts', [])
-                if parts:
-                    questions_text = parts[0].get('text', '').strip()
-                    questions = [q.strip().rstrip('?') for q in questions_text.split('|') if q.strip()]
-                    questions = [q for q in questions if len(q.split()) <= 4 and len(q) > 0][:2]
-                    
-                    if len(questions) < 2:
-                        questions = ["Tell me more", "Give me an example"]
-                        
-                    logger.info(f"Generated follow-up questions: {questions}")
-                    return questions
-                    
-        logger.error(f"API Error: {res.text}")
-        return ["Tell me more", "Give me an example"]
-        
-    except Exception as e:
-        logger.error(f"Error in generate_followup_questions: {str(e)}")
-        return ["Tell me more", "Give me an example"]
+    """Returns concise follow-up question suggestions without extra API calls to save quota."""
+    return ["Tell me more", "Explain in detail"]
 
 def generate_gemini_response(chat_history, new_question, is_followup=False):
     """Generates a Gemini response to a question with enhanced context handling using Google AI Studio API"""
