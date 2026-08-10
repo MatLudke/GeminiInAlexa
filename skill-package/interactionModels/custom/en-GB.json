@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "chat",
+            "invocationName": "gemini",
             "intents": [
                 {
                     "name": "GeminiQueryIntent",
