@@ -13,7 +13,7 @@ import re
 # Set your Google AI Studio API key
 api_key = os.environ.get("GEMINI_API_KEY", os.environ.get("GOOGLE_API_KEY", "YOUR_API_KEY"))
 
-model = "gemini-3.5-flash"
+model = "gemini-2.5-flash"
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -231,7 +231,7 @@ def generate_gemini_response(chat_history, new_question, is_followup=False):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
     headers = {"Content-Type": "application/json"}
     
-    system_message = "You are a helpful assistant. Answer in 50 words or less."
+    system_message = "You are a helpful assistant. Provide clear, comprehensive, and up-to-date answers. Feel free to explain in detail."
     if is_followup:
         system_message += " This is a follow-up question to the previous conversation. Maintain context without repeating information already provided."
     
@@ -251,8 +251,11 @@ def generate_gemini_response(chat_history, new_question, is_followup=False):
             "parts": [{"text": system_message}]
         },
         "contents": contents,
+        "tools": [
+            {"googleSearch": {}}
+        ],
         "generationConfig": {
-            "maxOutputTokens": 300,
+            "maxOutputTokens": 2048,
             "temperature": 0.7
         }
     }
