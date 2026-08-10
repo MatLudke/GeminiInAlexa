@@ -9,6 +9,7 @@ import requests
 import logging
 import json
 import re
+import time
 
 # Set your Google AI Studio API key
 api_key = os.environ.get("GEMINI_API_KEY", os.environ.get("GOOGLE_API_KEY", "YOUR_API_KEY"))
@@ -172,8 +173,8 @@ def generate_followup_questions(conversation_context, query, response_text, coun
     return ["Tell me more", "Explain in detail"]
 
 def generate_gemini_response(chat_history, new_question, is_followup=False):
-    """Generates a Gemini response to a question with enhanced context handling using Google AI Studio API"""
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+    """Generates a Gemini response to a question with retry and fallback to eliminate 429 errors."""
+    url_primary = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
     headers = {"Content-Type": "application/json"}
     
     system_message = "You are a helpful assistant. Provide clear, comprehensive, and up-to-date answers. Feel free to explain in detail."
@@ -209,32 +210,51 @@ def generate_gemini_response(chat_history, new_question, is_followup=False):
     }
     
     try:
-        response = requests.post(url, headers=headers, data=json.dumps(data))
+        response = None
+        # Attempt 1 & Retry 2 on primary model (gemini-3.6-flash)
+        for attempt in range(2):
+            response = requests.post(url_primary, headers=headers, data=json.dumps(data))
+            if response.ok:
+                break
+            elif response.status_code == 429:
+                logger.warning(f"Got 429 rate limit on attempt {attempt+1}. Sleeping 1.5s...")
+                time.sleep(1.5)
+            else:
+                break
+                
+        # If still 429 or error, fallback to gemini-2.5-flash without thinkingConfig
+        if not response or not response.ok:
+            if response and response.status_code == 429:
+                logger.warning("429 persisted on gemini-3.6-flash. Falling back to gemini-2.5-flash with Google Search.")
+                fallback_model = "gemini-2.5-flash"
+                url_fallback = f"https://generativelanguage.googleapis.com/v1beta/models/{fallback_model}:generateContent?key={api_key}"
+                
+                fallback_data = json.loads(json.dumps(data))
+                if "thinkingConfig" in fallback_data.get("generationConfig", {}):
+                    del fallback_data["generationConfig"]["thinkingConfig"]
+                    
+                response = requests.post(url_fallback, headers=headers, data=json.dumps(fallback_data))
+        
         response_data = response.json()
         if response.ok:
             candidates = response_data.get('candidates', [])
             if candidates:
                 parts = candidates[0].get('content', {}).get('parts', [])
                 if parts:
-                    response_text = parts[0].get('text', '')
+                    # Collect all text parts (skipping thought parts if any)
+                    text_parts = [p.get('text', '') for p in parts if 'text' in p]
+                    response_text = " ".join(text_parts).strip() if text_parts else parts[0].get('text', '')
                 else:
                     finish_reason = candidates[0].get('finishReason', 'UNKNOWN')
                     response_text = f"No response generated (Reason: {finish_reason})."
             else:
                 response_text = "No response candidates returned."
             
-            # Generate follow-up questions for the response
-            try:
-                followup_questions = generate_followup_questions(
-                    chat_history + [(new_question, response_text)], 
-                    new_question, 
-                    response_text
-                )
-                logger.info(f"Generated follow-up questions: {followup_questions}")
-            except Exception as e:
-                logger.error(f"Error generating follow-up questions: {str(e)}")
-                followup_questions = []
-            
+            followup_questions = generate_followup_questions(
+                chat_history + [(new_question, response_text)], 
+                new_question, 
+                response_text
+            )
             return response_text, followup_questions
         else:
             error_msg = response_data.get('error', {}).get('message', response.text)
