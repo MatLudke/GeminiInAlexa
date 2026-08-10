@@ -13,7 +13,7 @@ import re
 # Set your Google AI Studio API key
 api_key = os.environ.get("GEMINI_API_KEY", os.environ.get("GOOGLE_API_KEY", "YOUR_API_KEY"))
 
-model = "gemini-3.5-flash"
+model = "gemini-3.6-flash"
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -256,7 +256,10 @@ def generate_gemini_response(chat_history, new_question, is_followup=False):
         ],
         "generationConfig": {
             "maxOutputTokens": 2048,
-            "temperature": 0.7
+            "temperature": 0.7,
+            "thinkingConfig": {
+                "thinkingLevel": "MEDIUM"
+            }
         }
     }
     
